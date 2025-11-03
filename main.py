@@ -4,28 +4,60 @@ result=0
 currentOP=""
 def add() :
     global result,currentOP
-    num=float(output.get())
-    result+=num
+    operate()
     output.delete(0,END)
     currentOP="add"
+def sub() :
+    global result, currentOP
+    operate()
+    currentOP = "sub"
+    output.delete(0, END)
+
+def mult() :
+    global result, currentOP
+    operate()
+    output.delete(0, END)
+    currentOP = "mult"
+def div() :
+    global result, currentOP
+    operate()
+    output.delete(0, END)
+    currentOP = "div"
 def click(num) :
     current=output.get()
     output.delete(0,END)
     output.insert(0,str(current)+str(num))
 def clear() :
-    global result
+    global result,currentOP
     result=0
+    currentOP=""
     output.delete(0,END)
 def equal() :
     global result,currentOP
-    match currentOP :
-        case "add" :
-            result+=float(output.get())
-
-
+    operate()
     output.delete(0,END)
     output.insert(0,str(result))
     result=0
+    currentOP=""
+def operate () :
+    global result,currentOP
+    num=float(output.get())
+    match currentOP :
+        case "" :
+            result=num
+        case "add" :
+            result+=num
+        case "sub" :
+            result-=num
+        case "mult" :
+            result*=num
+        case "div" :
+            if num==0 :
+                print("you cant divide by zero")
+            result/=num
+
+
+
 buttons= [
     ("7", 1, 0), ("8", 1, 1), ("9", 1, 2),
     ("4", 2, 0), ("5", 2, 1), ("6", 2, 2),
@@ -44,13 +76,13 @@ for button in buttons:
   Button(frame1,text=button[0],font=("arial",18),padx=35,pady=10,command=lambda num=button[0]: click(num)).grid(row=button[1],column=button[2])
 
 buttonplus=Button(frame1,text="+",font=("arial",18),padx=32,pady=10,command=add).grid(row=1,column=3)
-buttonminus=Button(frame1,text="-",font=("arial",18),padx=35,pady=10).grid(row=2,column=3)
-buttonmultip=Button(frame1,text="*",font=("arial",18),padx=35,pady=10).grid(row=3,column=3)
-button0=Button(frame1,text="0",font=("arial",18),padx=35,pady=10).grid(row=4,column=1)
+buttonminus=Button(frame1,text="-",font=("arial",18),padx=35,pady=10,command=sub).grid(row=2,column=3)
+buttonmultip=Button(frame1,text="*",font=("arial",18),padx=34,pady=10,command=mult).grid(row=3,column=3)
+button0=Button(frame1,text="0",font=("arial",18),padx=35,pady=10,command=lambda : click(0)).grid(row=4,column=1)
 buttonC=Button(frame1,text="C",font=("arial",18),padx=33,pady=10,command=clear).grid(row=4,column=2)
-buttondiv=Button(frame1,text="/",font=("arial",18),padx=33,pady=10).grid(row=4,column=3)
+buttondiv=Button(frame1,text="/",font=("arial",18),padx=35,pady=10,command=div).grid(row=4,column=3)
 buttonpoint=Button(frame1,text=".",font=("arial",18),padx=37,pady=10,command=lambda :click(".")).grid(row=4,column=0)
-buttonequals=Button(frame1,text="=",font=("arial",18),padx=33,pady=10,command=equal).grid(row=4,column=3)
+buttonequals=Button(frame1,text="=",font=("arial",18),padx=82,pady=10,command=equal).grid(row=5,column=2,columnspan=2)
 
 
 
